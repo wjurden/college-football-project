@@ -1,0 +1,78 @@
+--NUMBER OF PLAYS PER GAME
+SELECT 
+    defense,
+    count(id) as "num_of_plays"
+FROM Play_by_Play
+GROUP BY defense
+ORDER BY num_of_plays desc;
+
+
+--NUMBER OF DRIVES PER GAME
+SELECT
+    defense,
+    MAX(drive_number) as "num_of_drives"
+FROM Play_by_Play
+GROUP BY defense
+ORDER BY num_of_drives DESC;
+
+
+-- NUMBER OF CARRIES PER GAME FOR TREVYON HENDERSON
+SELECT 
+    pgs.game_id,
+    pgs.school,
+    CASE
+        WHEN pgs.homeAway = 'home' THEN g.away_team
+        WHEN pgs.homeAway = 'away' THEN g.home_team
+    END AS "opposing_team",
+    pgs.stat_category,
+    pgs.stat_type,
+    pgs.athlete,
+    pgs.stat  
+FROM Player_Game_Stats pgs
+    LEFT JOIN Games g ON pgs.game_id = g.id
+WHERE stat_category = 'rushing' 
+AND stat_type = 'CAR'
+AND athlete LIKE '% Henderson'
+ORDER BY stat DESC;
+
+
+--PLAY COUNT BY PLAY TYPE & QUARTER
+SELECT DISTINCT(play_type) as "play_type",
+    period,
+    COUNT(id) as "play_count"
+FROM Play_by_Play
+WHERE play_type NOT IN ('End Period', 'End of Game', 'End of Half')
+GROUP BY play_type, period
+ORDER BY play_type, period ASC, play_count DESC;
+
+
+--PLAY COUNT BY GAME & TYPE
+SELECT DISTINCT(pbp.play_type) as "play_type",
+    CASE
+        WHEN pbp.away <> 'Ohio State' THEN pbp.away
+        WHEN pbp.away = 'Ohio State' THEN pbp.home
+    END AS "opposing_team",
+    COUNT(pbp.id) as "play_count",
+    
+    CASE
+        WHEN pbp.away <> 'Ohio State' THEN g.home_points
+        WHEN pbp.away = 'Ohio State' THEN g.away_points
+    END AS "osu_pts",
+    
+    CASE
+        WHEN pbp.away <> 'Ohio State' THEN g.away_points
+        WHEN pbp.away = 'Ohio State' THEN g.home_points
+    END AS "opposing_team_pts"
+    
+FROM Play_by_Play pbp
+    LEFT JOIN Games g ON pbp.game_id = g.id
+WHERE play_type IN ('Pass Reception', 'Pass Incompletion', 'Passing Touchdown', 'Rush', 'Rushing Touchdown')
+GROUP BY opposing_team, play_type
+ORDER BY play_type, play_count DESC;
+
+    
+
+
+
+
+
