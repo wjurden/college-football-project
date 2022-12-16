@@ -87,5 +87,5 @@ for game in games:
 
 #Changing directory and then saving file
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/raw')
-df.to_csv('raw_game_data_2022.csv')
+df.to_csv('raw_game_data_2022.csv', index= False)
 
