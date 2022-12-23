@@ -6,7 +6,7 @@ import creds
 import os
 import pandas as pd
 
-#Change working directory to 'code' directory
+#Change working directory to 'code' directory so creds can be passed
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/code')
 
 #===============================
