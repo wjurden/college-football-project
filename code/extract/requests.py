@@ -25,3 +25,6 @@ json_response = response.json()
 
 #Pretty print
 print(json.dumps(json_response, indent=2))
+
+# Printing keys of first list object
+json_response[1].keys()
