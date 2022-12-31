@@ -14,7 +14,7 @@ os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/co
 #===============================
 # Configuring API
 #===============================
-endpoint = 'https://api.collegefootballdata.com/games?year=2022'
+endpoint = 'https://api.collegefootballdata.com/games?year=2022' #Setting year to 2022
 headers = {"Authorization": f"Bearer {creds.api_key}"}
 
 #===============================
@@ -28,3 +28,7 @@ print(json.dumps(json_response, indent=2))
 
 # Printing keys of first list object
 json_response[1].keys()
+
+#===============================
+# Creating List of Values
+#===============================
