@@ -14,6 +14,5 @@ This is a project analyzing college football data extracted from the [College Fo
 
 ## Conclusions
 
-
 ## Objective 
 
