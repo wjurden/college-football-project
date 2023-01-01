@@ -7,6 +7,7 @@ import creds
 import os
 import requests
 import json
+import pandas as pd
 
 #Change working directory to 'code' directory so creds can be passed
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/code')
@@ -26,9 +27,24 @@ json_response = response.json()
 #Pretty print
 print(json.dumps(json_response, indent=2))
 
-# Printing keys of first list object
-json_response[1].keys()
-
 #===============================
 # Creating List of Values
 #===============================
+
+# Printing keys of first list object
+headers = json_response[1].keys()
+
+#Creating empty dataframe to add values into
+df = pd.DataFrame(columns= headers)
+
+#Adding games to dataframe
+for game in json_response:
+    df.loc[len(df)] = game.values()
+
+#===============================
+# Saving file
+#===============================
+
+#Changing directory and then saving file
+os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/raw')
+df.to_csv('raw_game_data_2022_requests.csv', index= False)
