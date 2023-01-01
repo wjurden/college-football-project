@@ -9,7 +9,7 @@ import requests
 import json
 import pandas as pd
 
-#Change working directory to 'code' directory so creds can be passed
+# Change working directory to 'code' directory so creds can be passed
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/code')
 
 #===============================
@@ -19,7 +19,7 @@ endpoint = 'https://api.collegefootballdata.com/games?year=2022' #Setting year t
 headers = {"Authorization": f"Bearer {creds.api_key}"}
 
 #===============================
-# Creating an instance of the API for all games in 2022
+# Pulling Data
 #===============================
 response = requests.get(endpoint,headers=headers)
 json_response = response.json()
@@ -31,7 +31,7 @@ print(json.dumps(json_response, indent=2))
 # Creating List of Values
 #===============================
 
-# Printing keys of first list object
+# Pulling keys of first list object
 headers = json_response[1].keys()
 
 #Creating empty dataframe to add values into
@@ -45,6 +45,6 @@ for game in json_response:
 # Saving file
 #===============================
 
-#Changing directory and then saving file
+# Changing directory and then saving file
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/raw')
 df.to_csv('raw_game_data_2022_requests.csv', index= False)
