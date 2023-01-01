@@ -2,7 +2,7 @@
 # Using REQUESTS to pull the data instead of custon CFDB package
 #===============================
 
-#Importing packages
+# Importing packages
 import creds
 import os
 import requests
@@ -24,7 +24,7 @@ headers = {"Authorization": f"Bearer {creds.api_key}"}
 response = requests.get(endpoint,headers=headers)
 json_response = response.json()
 
-#Pretty print
+# Pretty print
 print(json.dumps(json_response, indent=2))
 
 #===============================
@@ -34,10 +34,10 @@ print(json.dumps(json_response, indent=2))
 # Pulling keys of first list object
 headers = json_response[1].keys()
 
-#Creating empty dataframe to add values into
+# Creating empty dataframe to add values into
 df = pd.DataFrame(columns= headers)
 
-#Adding games to dataframe
+# Adding games to dataframe
 for game in json_response:
     df.loc[len(df)] = game.values()
 
