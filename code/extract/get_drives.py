@@ -32,14 +32,22 @@ print(json.dumps(json_response, indent=2))
 #===============================
 
 # Pulling keys of first list object
-headers = json_response[1].keys()
+column_names = json_response[1].keys()
 
 # Creating empty dataframe to add values into
-df = pd.DataFrame(columns= headers)
+df = pd.DataFrame(columns= column_names)
 
 # Adding data to dataframe
 for drive in json_response:
     df.loc[len(df)] = drive.values()
+
+# Converting time values to seconds
+i = 0
+while i < len(json_response):
+    df.loc[i,'start_time_sec'] = round(json_response[i]['start_time']['minutes']*60 + json_response[i]['start_time']['seconds'])
+    df.loc[i,'end_time_sec'] = round(json_response[i]['end_time']['minutes']*60 + json_response[i]['end_time']['seconds'])
+    df.loc[i,'elapsed_sec'] = round(json_response[i]['elapsed']['minutes']*60 + json_response[i]['elapsed']['seconds'])
+    i += 1
 
 #===============================
 # Saving file
