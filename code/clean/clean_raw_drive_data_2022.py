@@ -1,4 +1,6 @@
-# WORK IN PROGRESS
+#===============================
+# The purpose of this file is to remove columns from the raw drive data
+#===============================
 
 import os
 import pandas as pd
@@ -14,7 +16,6 @@ df.iloc[0]
 
 # Dropping these columns since we do not need them. They are formatted as dicts and we have seconds columns to replace them.
 df.drop(columns=['start_time', 'end_time', 'elapsed'])
-
 
 # Changing directory and then saving file
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/clean')
