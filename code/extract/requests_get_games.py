@@ -32,10 +32,10 @@ print(json.dumps(json_response, indent=2))
 #===============================
 
 # Pulling keys of first list object
-headers = json_response[1].keys()
+column_names = json_response[1].keys()
 
 # Creating empty dataframe to add values into
-df = pd.DataFrame(columns= headers)
+df = pd.DataFrame(columns= column_names)
 
 # Adding games to dataframe
 for game in json_response:
