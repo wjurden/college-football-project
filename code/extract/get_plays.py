@@ -34,32 +34,33 @@ headers = {"Authorization": f"Bearer {creds.api_key}"}
 # Creating List of Values
 #===============================
 start_time = datetime.now()
- 
+
+# Create an empty list to store the dataframes for each week
+df_list = []
+
+# Loop through the weeks
 for w in week:
-    
-    # Pulling data for each week
-    endpoint = f'https://api.collegefootballdata.com/plays?seasonType=regular&year=2022&week={w}' #Setting year to 2022, and season to regular
+    # Pull data for each week
+    endpoint = f'https://api.collegefootballdata.com/plays?seasonType=regular&year=2022&week={w}' 
     response = requests.get(endpoint,headers=headers)
     json_response = response.json()
-    print(json.dumps(json_response, indent=2))
+    print(json.dumps(json_response, indent=2)) # Checkpoint
 
-    # Looping through data to add it to a dataframe
+    # Extract values from dictionaries in json_response
+    rows = [list(play.values()) for play in json_response]
+    
     if w == 1:
         # Pulling keys of first list object
         column_names = json_response[1].keys()
-
-        # Creating empty dataframe to add values into
-        df = pd.DataFrame(columns= column_names)
-    
-        # Adding games to dataframe
-        for play in json_response:
-            df.loc[len(df)] = play.values()
-        df.tail()
+        df = pd.DataFrame(rows, columns=column_names)
     else:
-        # Adding games to dataframe
-        for play in json_response:
-            df.loc[len(df)] = play.values()
-        df.tail()
+        df = pd.concat([df, pd.DataFrame(rows, columns=column_names)], ignore_index=True)
+    
+    df.tail() # Checkpoint
+
+# final Dataframe
+result = df
+
 
 # Printing how long the loop took to run
 end_time = datetime.now()
