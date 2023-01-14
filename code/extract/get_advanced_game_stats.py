@@ -1,5 +1,5 @@
 #===============================
-# Using REQUESTS to pull the data
+# NOT SURE I ACTUALLY NEED THESE DATA.... 
 #===============================
 
 # Importing packages
@@ -45,7 +45,7 @@ df = pd.DataFrame(rows, columns= column_names)
 df.tail() # Checkpoint
 
 
-# Testsing 
+# Test string 
 jsonString = json.dumps(json_response)
 
 df = pd.read_json(jsonString)
@@ -53,7 +53,7 @@ df2 = df.iloc[:,0:4]
 
 # Unpacking offensive data
 off_df = df['offense'].apply(pd.Series)
-df3 = off_df.loc['plays':'openFieldYardTotal']
+df3 = off_df.iloc[:,0:14]
 
 ostd_df = off_df['standardDowns'].apply(pd.Series)
 opass_df = off_df['passingDowns'].apply(pd.Series)
@@ -62,6 +62,7 @@ opp_df = off_df['passingPlays'].apply(pd.Series)
 
 # Unpacking defensive data
 def_df = df['defense'].apply(pd.Series)
+df4 = def_df.iloc[:,0:14]
 
 dpass_df = off_df['standardDowns'].apply(pd.Series)
 dpass_df = off_df['passingDowns'].apply(pd.Series)
