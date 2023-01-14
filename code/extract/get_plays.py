@@ -1,9 +1,5 @@
 #===============================
-# RUN THIS SCRIPT AFTER 1-10-2023, when all games are finished.
-#===============================
-
-#===============================
-# Using REQUESTS to pull the data. This script pulls data for 2022 regular season data only. 
+# Using REQUESTS to pull the data.
 #===============================
 
 # Importing packages
@@ -100,4 +96,4 @@ print(final_time)
 
 # Changing directory and then saving file
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/raw')
-result2.to_csv('raw_play_data_2022_raw.csv', index= False)
+result2.to_csv('raw_play_data_2022.csv', index= False)
