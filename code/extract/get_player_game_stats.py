@@ -17,18 +17,8 @@ os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/co
 # Configuring API
 #===============================
 
-# Creating a list of week numbers that will be looped through
-week = list(range(1,15))
-
 # Configuring the api header
 headers = {"Authorization": f"Bearer {creds.api_key}"}
-
-
-#===============================
-# Testing response
-#===============================
-
-
 
 #===============================
 # Unpacking json
@@ -50,8 +40,6 @@ for w in week:
     json_response = response.json()
 
     print(json.dumps(json_response, indent=2)) # Checkpoint
-
-
 
 
 # This is the root of each school
@@ -92,9 +80,13 @@ ath_name = json_response[0]['teams'][1]['categories'][0]['types'][0]['athletes']
 stat = json_response[0]['teams'][1]['categories'][0]['types'][0]['athletes'][0]['stat']
 
 # Creating list of rows
+rows = [school, conference, homeAway, points, cat, sub_cat, ath_id, ath_name, stat]
 
-rows = [school, ]
+# Adding rows to dataframe
+df = pd.concat([df, pd.DataFrame(rows, columns=column_names)], ignore_index=True)
 
+# Saving final dataframe
+result = df
 
 #===============================
 # Saving file
