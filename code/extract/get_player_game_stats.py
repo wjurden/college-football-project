@@ -41,6 +41,59 @@ for w in week:
 
     print(json.dumps(json_response, indent=2)) # Checkpoint
 
+# Need to loop through teams, category, sub category, and athletes
+
+for team in range(len(json_response[0])):
+    # School
+    school = json_response[0]['teams'][team]['school']
+
+    # Conference
+    conference = json_response[0]['teams'][team]['conference']
+
+    # homeAway
+    homeAway = json_response[0]['teams'][team]['homeAway']
+
+    # Points
+    points = json_response[0]['teams'][team]['points']
+    
+    # Creating list of team data
+    team_data = [school,conference,homeAway,points]
+    
+    #print(team_data) # Check point
+
+    # For Loop for Categories
+    for category in range(len(json_response[0]['teams'][team]['categories'])):
+        cat = json_response[0]['teams'][team]['categories'][category]['name'] 
+        cat = [cat]
+        #print(cat)
+
+        for sub_category in range(len(json_response[0]['teams'][team]['categories'][category]['types'])):
+            # Sub category
+            sub_cat = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['name']
+
+            # List of athletes
+            for athlete in range(len(json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'])):
+
+                # ID of athlete
+                ath_id = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['id']
+
+                # Name of athlete
+                ath_name = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['name']
+
+                # Stat of athlete
+                stat = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['stat']
+
+                sub_cat_data = [sub_cat,ath_id,ath_name,stat]
+                #print(sub_cat_data)
+
+        row = team_data + cat + sub_cat_data
+        print(row)
+
+# Test Endpoint
+endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week=1&seasonType=regular&team=Ohio%20State' 
+response = requests.get(endpoint,headers=headers)
+json_response = response.json()
+print(json.dumps(json_response, indent=2)) # Checkpoint
 
 # This is the root of each school
 osu = json_response[0]['teams'][1]
@@ -68,7 +121,7 @@ cat = json_response[0]['teams'][1]['categories'][0]['name']
 sub_cat = json_response[0]['teams'][1]['categories'][0]['types'][0]['name']
 
 # List of athletes
-athletes = json_response[0]['teams'][1]['categories'][0]['types'][0]['athletes']
+athletes = json_response[0]['teams'][1]['categories'][5]['types'][0]['athletes']
 
 # ID of athlete
 ath_id = json_response[0]['teams'][1]['categories'][0]['types'][0]['athletes'][0]['id']
