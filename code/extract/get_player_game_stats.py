@@ -31,7 +31,7 @@ week = list(range(1,15))
 column_names = ['school', 'conference', 'homeAway', 'points', 'category', 'sub_category', 'athlete_id', 'athlete_name', 'stat']
 
 # Creating empty data frame
-df = pd.DataFrame(columns=column_names)
+df = pd.DataFrame()
 
 for w in week:
     # Pulling data for each week
@@ -41,7 +41,7 @@ for w in week:
 
     print(json.dumps(json_response, indent=2)) # Checkpoint
 
-# Need to loop through teams, category, sub category, and athletes
+# Looping through teams, category, sub category, and athletes
 
 for team in range(len(json_response[0])):
     # School
@@ -86,8 +86,16 @@ for team in range(len(json_response[0])):
                 sub_cat_data = [sub_cat,ath_id,ath_name,stat]
                 #print(sub_cat_data)
 
-        row = team_data + cat + sub_cat_data
-        print(row)
+                # Combining data into a row 
+                rows = team_data + cat + sub_cat_data
+
+                print(rows)
+
+                # Adding data to data frame - this is adding all data to one column currently
+                df2 = pd.DataFrame(rows)
+                df = pd.concat([df,df2], ignore_index= True)
+                result = df
+                print(result.tail())
 
 # Test Endpoint
 endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week=1&seasonType=regular&team=Ohio%20State' 
