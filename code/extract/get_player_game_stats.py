@@ -28,81 +28,100 @@ headers = {"Authorization": f"Bearer {creds.api_key}"}
 week = list(range(1,15))
 
 # Creating column names
-column_names = ['school', 'conference', 'homeAway', 'points', 'category', 'sub_category', 'athlete_id', 'athlete_name', 'stat']
+column_names = ['game_id','school', 'conference', 'homeAway', 'points', 'category', 'sub_category', 'athlete_id', 'athlete_name', 'stat']
 
 # Creating empty data frame
 df = pd.DataFrame(columns=column_names)
 
+# Currently getting an error that the list index is out of range - will have to look at how this is set up again
 for w in week:
     # Pulling data for each week
-    i += 1
-    endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week={w}&seasonType=regular&team=Ohio%20State' 
+    endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week={w}&seasonType=both' 
     response = requests.get(endpoint,headers=headers)
     json_response = response.json()
-    print(json.dumps(json_response, indent=2)) # Checkpoint
+    print(response)
+    #print(json.dumps(json_response, indent=2)) # Checkpoint
 
+    game = 0
 
 # Looping through teams, category, sub category, and athletes - This currently works for getting week 1 data!
+    while game <= len(json_response):
+        for team in range(len(json_response[game])):
+            # Game Id
+            game_id = school = json_response[game]['id']
 
-for team in range(len(json_response[0])):
-    # School
-    school = json_response[0]['teams'][team]['school']
+            # School
+            school = json_response[game]['teams'][team]['school']
 
-    # Conference
-    conference = json_response[0]['teams'][team]['conference']
+            # Conference
+            conference = json_response[game]['teams'][team]['conference']
 
-    # homeAway
-    homeAway = json_response[0]['teams'][team]['homeAway']
+            # homeAway
+            homeAway = json_response[game]['teams'][team]['homeAway']
 
-    # Points
-    points = json_response[0]['teams'][team]['points']
-    
-    # Creating list of team data
-    team_data = [school,conference,homeAway,points]
-    
-    #print(team_data) # Check point
+            # Points
+            points = json_response[game]['teams'][team]['points']
+            
+            # Creating list of team data
+            team_data = [game_id,school,conference,homeAway,points]
+            
+            #print(team_data) # Check point
 
-    # For Loop for Categories
-    for category in range(len(json_response[0]['teams'][team]['categories'])):
-        cat = json_response[0]['teams'][team]['categories'][category]['name'] 
-        cat = [cat]
-        #print(cat)
+            # For Loop for Categories
+            for category in range(len(json_response[game]['teams'][team]['categories'])):
+                cat = json_response[game]['teams'][team]['categories'][category]['name'] 
+                cat = [cat]
+                #print(cat)
 
-        for sub_category in range(len(json_response[0]['teams'][team]['categories'][category]['types'])):
-            # Sub category
-            sub_cat = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['name']
+                for sub_category in range(len(json_response[w]['teams'][team]['categories'][category]['types'])):
+                    # Sub category
+                    sub_cat = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['name']
 
-            # List of athletes
-            for athlete in range(len(json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'])):
+                    # List of athletes
+                    for athlete in range(len(json_response[w]['teams'][team]['categories'][category]['types'][sub_category]['athletes'])):
 
-                # ID of athlete
-                ath_id = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['id']
+                        # ID of athlete
+                        ath_id = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['id']
 
-                # Name of athlete
-                ath_name = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['name']
+                        # Name of athlete
+                        ath_name = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['name']
 
-                # Stat of athlete
-                stat = json_response[0]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['stat']
+                        # Stat of athlete
+                        stat = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['stat']
 
-                sub_cat_data = [sub_cat,ath_id,ath_name,stat]
-                #print(sub_cat_data)
+                        sub_cat_data = [sub_cat,ath_id,ath_name,stat]
+                        #print(sub_cat_data)
 
-                # Combining data into a row 
-                rows = team_data + cat + sub_cat_data
+                        # Combining data into a row 
+                        rows = team_data + cat + sub_cat_data
 
-                print(rows)
+                        print(rows)
 
-                # Adding data to data frame - this is adding all data to one column currently
-                df2 = pd.DataFrame([rows],columns=column_names)
-                df = pd.concat([df,df2], ignore_index= True)
-                result = df
-                print(result.tail())
-                
+                        # Adding data to data frame - this is adding all data to one column currently
+                        df2 = pd.DataFrame([rows],columns=column_names)
+                        df = pd.concat([df,df2], ignore_index= True)
+                        result = df
+                        print(result.tail())
+                        
+        # Incrementing game
+        game += 1        
+
+
 # Test Endpoint
-endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week=1&seasonType=regular&team=Ohio%20State' 
+# endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week=1&seasonType=regular&team=Ohio%20State' 
+# response = requests.get(endpoint,headers=headers)
+# json_response = response.json()
+# print(json.dumps(json_response, indent=2)) # Checkpoint
+
+# Test Endpoint for all Games
+endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week=1&seasonType=both' 
 response = requests.get(endpoint,headers=headers)
 json_response = response.json()
 print(json.dumps(json_response, indent=2)) # Checkpoint
+
+json_response[0]['id']
+
+
 
 #===============================
 # Saving file
