@@ -33,7 +33,7 @@ column_names = ['game_id','school', 'conference', 'homeAway', 'points', 'categor
 # Creating empty data frame
 df = pd.DataFrame(columns=column_names)
 
-# Currently getting an error that the list index is out of range - will have to look at how this is set up again
+# This is much closer, it is just getting duplicates about halfway through the run
 for w in week:
     # Pulling data for each week
     endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week={w}&seasonType=both' 
@@ -44,7 +44,7 @@ for w in week:
 
     game = 0
 
-# Looping through teams, category, sub category, and athletes - This currently works for getting week 1 data!
+# Looping through teams, category, sub category, and athletes - This currently works for half the data.
     while game <= len(json_response):
         for team in range(len(json_response[game])):
             # Game Id
@@ -73,12 +73,12 @@ for w in week:
                 cat = [cat]
                 #print(cat)
 
-                for sub_category in range(len(json_response[w]['teams'][team]['categories'][category]['types'])):
+                for sub_category in range(len(json_response[game]['teams'][team]['categories'][category]['types'])):
                     # Sub category
                     sub_cat = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['name']
 
                     # List of athletes
-                    for athlete in range(len(json_response[w]['teams'][team]['categories'][category]['types'][sub_category]['athletes'])):
+                    for athlete in range(len(json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'])):
 
                         # ID of athlete
                         ath_id = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['id']
@@ -95,16 +95,20 @@ for w in week:
                         # Combining data into a row 
                         rows = team_data + cat + sub_cat_data
 
-                        print(rows)
+                        print(rows) # Checkpoint
 
-                        # Adding data to data frame - this is adding all data to one column currently
+                        # Adding data to data frame
                         df2 = pd.DataFrame([rows],columns=column_names)
                         df = pd.concat([df,df2], ignore_index= True)
                         result = df
-                        print(result.tail())
-                        
+                        print(result.tail()) # Checkpoint
+
         # Incrementing game
         game += 1        
+
+#===============================
+# Everything below this is testing
+#===============================
 
 
 # Test Endpoint
@@ -119,7 +123,9 @@ response = requests.get(endpoint,headers=headers)
 json_response = response.json()
 print(json.dumps(json_response, indent=2)) # Checkpoint
 
-json_response[0]['id']
+json_response[0]
+json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['name']
+json_response[0]['teams'][0]['categories'][1]['types'][0]['name']
 
 
 
