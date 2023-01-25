@@ -20,7 +20,6 @@ os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/co
 # Configuring the api header
 headers = {"Authorization": f"Bearer {creds.api_key}"}
 
-
 #===============================
 # Code
 #===============================
