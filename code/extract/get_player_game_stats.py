@@ -20,9 +20,11 @@ os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/co
 # Configuring the api header
 headers = {"Authorization": f"Bearer {creds.api_key}"}
 
+
 #===============================
-# Unpacking json
+# Code
 #===============================
+start_time = datetime.now()
 
 # Creating a list of week numbers that will be looped through
 week = list(range(1,15))
@@ -33,101 +35,85 @@ column_names = ['game_id','school', 'conference', 'homeAway', 'points', 'categor
 # Creating empty data frame
 df = pd.DataFrame(columns=column_names)
 
-# This is much closer, it is just getting duplicates about halfway through the run
-for w in week:
-    # Pulling data for each week
-    endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week={w}&seasonType=both' 
-    response = requests.get(endpoint,headers=headers)
-    json_response = response.json()
-    print(response)
-    #print(json.dumps(json_response, indent=2)) # Checkpoint
+# Power 5 Conferences
+p5 = ['ACC','B12','B1G','SEC','PAC']
 
-    game = 0
+# Initialize a list to store the dataframes
+df_list = []
 
-# Looping through teams, category, sub category, and athletes - This currently works for half the data.
-    while game <= len(json_response):
-        for team in range(len(json_response[game])):
-            # Game Id
-            game_id = school = json_response[game]['id']
+# Only getting data for Power 5 Conferences
+for conf in p5:
 
-            # School
-            school = json_response[game]['teams'][team]['school']
+    # Loop through weeks
+    for w in week:
+        # Pulling data for each week
+        endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week={w}&seasonType=both&conference={conf}' 
+        response = requests.get(endpoint,headers=headers)
+        json_response = response.json()
 
-            # Conference
-            conference = json_response[game]['teams'][team]['conference']
+        # Loop through games in the response
+        for game in range(len(json_response)):
+            for team in range(len(json_response[game]['teams'])):
+                # Game Id
+                game_id = json_response[game]['id']
 
-            # homeAway
-            homeAway = json_response[game]['teams'][team]['homeAway']
+                # School
+                school = json_response[game]['teams'][team]['school']
 
-            # Points
-            points = json_response[game]['teams'][team]['points']
-            
-            # Creating list of team data
-            team_data = [game_id,school,conference,homeAway,points]
-            
-            #print(team_data) # Check point
+                # Conference
+                conference = json_response[game]['teams'][team]['conference']
 
-            # For Loop for Categories
-            for category in range(len(json_response[game]['teams'][team]['categories'])):
-                cat = json_response[game]['teams'][team]['categories'][category]['name'] 
-                cat = [cat]
-                #print(cat)
+                # homeAway
+                homeAway = json_response[game]['teams'][team]['homeAway']
 
-                for sub_category in range(len(json_response[game]['teams'][team]['categories'][category]['types'])):
-                    # Sub category
-                    sub_cat = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['name']
+                # Points
+                points = json_response[game]['teams'][team]['points']
+                
+                # Creating list of team data
+                team_data = [game_id,school,conference,homeAway,points]
 
-                    # List of athletes
-                    for athlete in range(len(json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'])):
+                # For Loop for Categories
+                for category in range(len(json_response[game]['teams'][team]['categories'])):
+                    cat = json_response[game]['teams'][team]['categories'][category]['name'] 
 
-                        # ID of athlete
-                        ath_id = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['id']
+                    for sub_category in range(len(json_response[game]['teams'][team]['categories'][category]['types'])):
+                        # Sub category
+                        sub_cat = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['name']
 
-                        # Name of athlete
-                        ath_name = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['name']
+                        # List of athletes
+                        for athlete in range(len(json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'])):
 
-                        # Stat of athlete
-                        stat = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['stat']
+                            # ID of athlete
+                            ath_id = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['id']
 
-                        sub_cat_data = [sub_cat,ath_id,ath_name,stat]
-                        #print(sub_cat_data)
+                            # Name of athlete
+                            ath_name = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['name']
 
-                        # Combining data into a row 
-                        rows = team_data + cat + sub_cat_data
+                            # Stat of athlete
+                            stat = json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['athletes'][athlete]['stat']
 
-                        print(rows) # Checkpoint
+                            sub_cat_data = [sub_cat,ath_id,ath_name,stat]
 
-                        # Adding data to data frame
-                        df2 = pd.DataFrame([rows],columns=column_names)
-                        df = pd.concat([df,df2], ignore_index= True)
-                        result = df
-                        print(result.tail()) # Checkpoint
+                            # Combining data into a row 
+                            rows = team_data + [cat] + sub_cat_data
 
-        # Incrementing game
-        game += 1        
+                            # Adding data to dataframe
+                            df2 = pd.DataFrame([rows],columns=column_names)
+                            df_list.append(df2)
+                            print(df2.tail())
 
-#===============================
-# Everything below this is testing
-#===============================
+    # Concatenate the list of dataframes
+    df = pd.concat(df_list, ignore_index=True)
 
+result = df
 
-# Test Endpoint
-# endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week=1&seasonType=regular&team=Ohio%20State' 
-# response = requests.get(endpoint,headers=headers)
-# json_response = response.json()
-# print(json.dumps(json_response, indent=2)) # Checkpoint
+# Dropping duplicates
+result.drop_duplicates(keep='first')
 
-# Test Endpoint for all Games
-endpoint = f'https://api.collegefootballdata.com/games/players?year=2022&week=1&seasonType=both' 
-response = requests.get(endpoint,headers=headers)
-json_response = response.json()
-print(json.dumps(json_response, indent=2)) # Checkpoint
-
-json_response[0]
-json_response[game]['teams'][team]['categories'][category]['types'][sub_category]['name']
-json_response[0]['teams'][0]['categories'][1]['types'][0]['name']
-
-
+# Printing how long the loop took to run
+end_time = datetime.now()
+final_time = end_time - start_time
+print(final_time)
 
 #===============================
 # Saving file
@@ -136,3 +122,4 @@ json_response[0]['teams'][0]['categories'][1]['types'][0]['name']
 # Changing directory and then saving file
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/raw')
 result.to_csv('raw_player_game_data_2022.csv', index= False)
+
