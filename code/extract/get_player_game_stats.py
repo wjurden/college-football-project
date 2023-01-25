@@ -120,5 +120,5 @@ print(final_time)
 
 # Changing directory and then saving file
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/raw')
-result.to_csv('raw_player_game_data_2022.csv', index= False)
+result.to_csv('raw_player_game_stats_data_2022.csv', index= False)
 
