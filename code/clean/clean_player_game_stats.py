@@ -20,11 +20,8 @@ df['athlete_id'] = df['athlete_id'].astype('str')
 
 df.dtypes
 
-# Converting each stat type into its own column
-cats = df[['category','sub_category']].drop_duplicates()
-cats
-
-
 # Changing directory and then saving file
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/clean')
 df.to_csv('player_game_stats_data_2022_clean.csv', index= False)
+
+
