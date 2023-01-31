@@ -13,11 +13,19 @@ df = pd.read_csv('raw_player_game_stats_data_2022.csv')
 df.columns
 df.info()
 df.iloc[0]
+df.value_counts()
+
+# Dropping Duplicates & Resetting Index
+df = df.drop_duplicates(subset=None, keep="first", inplace=False)
+df.tail()
+df.reset_index(drop=True, inplace=True)
+df.tail()
 
 # Converting data types
 df['game_id'] = df['game_id'].astype('str')
 df['athlete_id'] = df['athlete_id'].astype('str')
 
+# Checking data types
 df.dtypes
 
 # Changing directory and then saving file
