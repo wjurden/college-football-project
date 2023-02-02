@@ -18,6 +18,16 @@ df.value_counts()
 # Dropping Duplicates & Resetting Index
 df = df.drop_duplicates(subset=None, keep="first", inplace=False)
 df.tail()
+
+# Dropping those with a stat of '--'
+df_dirty =  df[df['stat'] == '--'].index
+df.drop(df_dirty, inplace = True)
+df[df['stat'] == '--']
+
+# Checking if team is still there
+df['athlete_name'].loc[df['athlete_name'].str.startswith('Team', na=False)].unique()
+
+# Resetting index
 df.reset_index(drop=True, inplace=True)
 df.tail()
 
