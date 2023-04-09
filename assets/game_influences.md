@@ -78,8 +78,19 @@ A proper amount of Exploratory Data Analysis (EDA) was conducted on the data to 
 
 ## Dimensionality Reduction
 
-Principal Component Analysis (PCA) and Factor Analysis (FA) were conducted to 
+Principal Component Analysis (PCA) and Factor Analysis (FA) were conducted to reduce the number of variables that went into the model. The results of the PCA indicated that there were approximately 4 linear combination of factors present within our model. The FA indicated there were 12. After further exploration, a total of 8 factors were determined necessary in the model as indicated by a factor weighting greater than or equal to 0.7. Using this criteria, the factors ended as follows:
+
+* Factor 1 (F1) is a normalized average of `completions` and `attempts`
+* Factor 2 (F2) is normalized `possessionTime_sec`
+* Factor 3 (F3) is a normalized average of `defensiveTDs`, `interceptionTDs`, and `interceptionYards`
+* Factor 4 (F4) is a normalized average of `netPassingYards`, `passingTDs`, and `yardsPerPass`
+* Factor 5 (F5) is a normalized average of `third_success` and `thirdDownEffpct`
+* Factor 6 (F6) is a normalized average of `penalty_flags` and `penalty_yards`
+* Factor 7 (F7) is a normalized average of `rushingYards` and `yardsPerRushAttempt`
+* Factor 8 (F8) is a normalized average of `fumblesLost` and `turnovers`
+
+When put into a linear regression model to predict points, these variables explained upwards of 76% of the variability in points scored, as indicated by the adjusted R^2. This reduced the number of factors from 44 down to 8, making the data much easier to work with. Additionally, an added benefit of using PCA and FA is that if that data were to become larger, this would allow the analysis to scale appropriately. 
 
 ## Model Development
 
-
+For this analysis multiple models were created. These models were primarily created using the `sklearn` library. This library provides many tools for conducting machine learning 
