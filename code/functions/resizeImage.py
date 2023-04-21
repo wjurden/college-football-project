@@ -6,7 +6,7 @@
 
 def resizeImage(path, length, width):
     # Import packages
-    import PIL
+    # import PIL
     import os
     import os.path
     from PIL import Image
