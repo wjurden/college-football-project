@@ -1,6 +1,6 @@
 # INSTRUCTIONS
 
-The purpose of this file is to provide a comprehesnive list of all the packackages that are used in this project. This will allow you to easily install the necessary files to get up and running with this project on your own.
+The purpose of this file is to provide a comprehesnive list of all the packages that are used in this project. This will allow you to easily install the necessary files to get up and running with this project on your own.
 
 ## Structure 
 

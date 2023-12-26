@@ -4,7 +4,14 @@
 
 ## **Contents**
 
-
+1. [Overview](#overview)
+2. [Project Objectives](#project-objectives)
+3. [Executive Summary](#executive-summary)
+4. [Dataset Information](#dataset-information)
+5. [Methods](#methods)
+6. [Results](#results)
+7. [Conclusions](#conclusions)
+8. [Limitations & Future Research](#limitations--future-research)
 
 ## **Overview**
 
