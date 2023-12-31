@@ -45,23 +45,23 @@ These insights can be used by coaches and players alike to help them win games a
 Being drafted in the NFL is every college football players' dream. Moving from making money only via NIL to having a salary and performing at the highest level pushes players to work as hard as possible. However, the success rate for many is difficult. With these insights, hopefully prospects will have a better idea of what they need to do in order to end up being drafted. 
 
 1. Expert predictions of `pre-draft ranking` is accurate for the highest draft picks, but **becomes unreliable after the first few rounds**. There are many forums that predict where an athlete will be drafted. However, if the athlete is not drafted in the first 2-3 rounds, these predictions are not very accurate. The best athletes can likely reliably utilize pre-draft rankings to negotiate better NFL contracts, while those who are lower ranks will have a lot more volatility.
->![pre draft ranking](assets/draft_status/pre_draft_ranking.png)
+![pre draft ranking](assets/draft_status/pre_draft_ranking.png)
 
 2. When trying to determine which round a player is drafted, **it is much easier to predict the first round and later rounds** - rounds 2 and 3 are very difficult to predict. It is relatively easy to know who is going to be drafted in the first round and who is NOT going to be drafted in the first round. This creates a "messy middle" situation where rounds 2 and 3 are rather unpredictable. Coaches can use this to their advantage to obtain high potential athletes who might fly under the radar. Other coaches may overlook these players and provide an opportunity to gain hidden talent early on.
->![random forest confusion matrix](assets/draft_status/rf_confusion.png)
+![random forest confusion matrix](assets/draft_status/rf_confusion.png)
 
 3. While `receiving TDs` show a moderate correlation to overall draft ranking, `rushing TDs` and `passing TDs` do not. This would indicate that **for running backs and quarterbacks, the number of touchdowns is not as influential as it is for wide receivers in determining draft position.**
->![correlation](/assets//draft_status/stats_correlation.png)
+![correlation](/assets//draft_status/stats_correlation.png)
 
 ### **Objective 3 (*Press Sentiment*)**
 
 Throughout the off-season, pre-season, and in-season, sports writers everywhere comentate on college football. Sometimes these are positive, sometimes they take a critical view of the program. 100 articles from `Eleven Warriors` were extracted and analyzed. The following insights were gained using a mix of `text analytics` and `sentiment analysis` techiques:
 
 1. While most of the articles are either positive or neutral, `negative` articles tend to be written towards the end of the season. In 2022, Ohio State University lost to the University of ❌ichigan - spurring a slew of negative articles.
->![sentiment time series](/assets/sentiment/sentiment_ts.png)
+![sentiment time series](/assets/sentiment/sentiment_ts.png)
 
 2. Using a `Random Forest` model, we were able to predict an article's sentiment with **79% accuracy**. In the case of NIL, this knowledge could be critical in ensuring the conversation about the team or endorsed athlete is staying relevant and positive in the media. 
->![confusion matrix](/assets/sentiment/sentiment_cm.png)
+![confusion matrix](/assets/sentiment/sentiment_cm.png)
 
 
 
