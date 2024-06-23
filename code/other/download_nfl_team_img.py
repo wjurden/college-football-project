@@ -13,7 +13,7 @@ import pandas as pd
 os.chdir('/Users/wesjurden/Documents/GitHub/Personal/college-football-project/data/raw') # Change '/Users/WJurde/Documents' to folder where your product images are saved
  
 # Reading in data
-df = pd.read_csv('raw_draft_teams.csv') # Change 'product_images.csv' to whatever your csv is called (this file needs to have no headers - the first row needs to be a url)
+df = pd.read_csv('raw_draft_teams.csv') # Change 'raw_draft_teams.csv' to whatever your csv is called (this file needs to have no headers - the first row needs to be a url)
 df.head()
  
 i=0
